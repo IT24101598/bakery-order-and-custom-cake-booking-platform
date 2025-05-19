@@ -1,0 +1,15 @@
+#3.Show Cake List to Customers
+
+- Get list of cakes sorted by price
+- Add cake list to model
+- Display the "cakeList" page for customers#
+
+//java
+
+@GetMapping("/cakeList")
+public String showCake(Model model) {
+    List<Cake> cakeList = cakeService.getSortedByPrice();
+    model.addAttribute("cake", cakeList);
+    return "cakeList";
+}
+
