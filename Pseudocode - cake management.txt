@@ -1,0 +1,138 @@
+Pseudocode - cake management
+
+ 1. show "add New Cake "   
+// admin can add cake
+
+- Create a new Cake object
+- Generate the next cake ID
+- Pass the Cake object to the add form
+- Display the "add-cake" page
+
+2. Add New Cake with Image
+//admin can add cakes and their details to page
+
+      @ Receive Cake Form Data
+
+        Receive Cake object (with name, price, quantity, etc.)
+        Receive uploaded image file from form (MultipartFile image)
+ 
+      @ Check if Image Is Uploaded
+
+         If the image is NOT empty:
+          - Continue to upload image
+         Else:
+          - Skip image upload
+   
+      @ Clean and Prepare the Image Filename(AI support)
+
+         originalFileName = image.getOriginalFilename()
+         cleanFileName = removePathAndSpecialChars(originalFileName)
+        
+          public class Constant {
+    
+          public static final String IMAGE_DIR = "src/main/resources/static/images/";
+
+          }
+      
+      @ Ensure images
+
+         uploadPath = Path to IMAGE_DIR (e.g., /uploads/images)
+         the upload folder doesn't exist:
+
+          - Create the directory
+
+             // ensures that your server has a folder ready to store uploaded image(Ai-supported)
+              Path uploadPath = Paths.get(IMAGE_DIR);
+
+              if (!Files.exists(uploadPath)) {
+               Files.createDirectories(uploadPath);
+               }
+     @  Rename Image with Cake ID Prefix
+
+       newFileName = cake.id + "_" + cleanFileName
+       filePath = uploadPath + newFileName
+       Purpose: Ensure filename is unique and traceable to the cake.
+
+    @  Copy the Uploaded File to the Upload Folder
+
+    Files.copy(image.getInputStream(), filePath, REPLACE_IF_EXISTS)
+     Purpose: Save the uploaded image physically on the server.
+
+    @ Set Image Path to the Cake Object
+
+    cake.setImagePath("/images/" + newFileName)
+
+    @ Save Cake to Database via CakeService
+
+    cakeService.addCake(cake)
+
+
+3. Show Cake List to Customers
+
+- Get list of cakes sorted by price
+- Add cake list to model
+- Display the "cakeList" page for customers
+
+
+
+4. Show Cake List to Admin
+
+- Get list of cakes sorted by price
+- Add cake list to model
+- Display the "admin-cake" page
+
+
+5. Delete a Cake
+
+- Delete cake by ID using CakeService
+- Redirect to /cake/admin
+
+
+6. Show Update Form
+
+- Get the cake by ID
+- Add it to the model
+- Show the "update-cake" form with current data
+
+
+7. Update Cake Info and Image(bind with part 2)
+
+- If a new image is uploaded:
+    - Rename and save the file
+    - Update the image path
+
+- Update the cake in the system using CakeService
+- Redirect to /cake/admin
+
+- If there's an error:
+    - Show error message on update form
+
+
+ 8. Buy a Cake add cart option
+
+java script object notation - json
+
+- Receive JSON with cake ID and quantity
+- Fetch cake by ID
+- If quantity is enough:
+    - Subtract bought quantity
+    - Update cake in the system
+    - Return "OK"
+- Else:
+    - Return "ERROR"
+
+//{
+  "id": "CK101",
+  "quantity": 2
+}
+This JSON contains:
+
+id - the cake ID (a string)
+
+quantity -how many pieces to buy (a number)
+
+
+
+
+
+
