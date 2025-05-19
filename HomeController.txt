@@ -1,0 +1,17 @@
+Define a controller class for handling web page routes.
+
+1.Function: home
+    *When a GET request is made to "/"
+        #Return the "home" view page (home.jsp)
+
+2.Function: login
+    *When a GET request is made to "/login"
+        #Return the "login" view page (login.jsp)
+
+3.Function: register
+    *When a GET request is made to "/register"
+        #Return the "register" view page (register.jsp)
+
+4.Function: showAdminPage
+    *When a GET request is made to "/admin"
+        #Return the "admin" view page (admin.jsp)
