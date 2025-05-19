@@ -1,0 +1,44 @@
+//without spring boot sinmple code
+import java.util scanner ;
+
+public class CakeApp {
+    static List<Cake> cakeList = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Cake Management Console App!");
+
+        while (true) {
+            System.out.println("\n1. Add Cake\n2. View Cakes\n3. Exit");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                Cake cake = new Cake();
+                System.out.print("Enter cake ID: ");
+                cake.setId(scanner.nextLine());
+
+                System.out.print("Enter name: ");
+                cake.setName(scanner.nextLine());
+
+                System.out.print("Enter price: ");
+                cake.setPrice(scanner.nextDouble());
+
+                System.out.print("Enter quantity: ");
+                cake.setQuantity(scanner.nextInt());
+
+                cakeList.add(cake);
+                System.out.println("Cake added successfully!");
+            } else if (choice == 2) {
+                System.out.println("Cake List:");
+                for (Cake cake : cakeList) {
+                    System.out.println(cake);
+                }
+            } else {
+                break;
+            }
+        }
+
+        scanner.close();
+    }
+}
