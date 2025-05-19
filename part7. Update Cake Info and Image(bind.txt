@@ -1,0 +1,47 @@
+#7. Update Cake Info and Image(bind with part 2)
+
+- If a new image is uploaded:
+    - Rename and save the file
+    - Update the image path
+
+- Update the cake in the system using CakeService
+- Redirect to /cake/admin
+
+- If there's an error:
+    - Show error message on update form#
+
+
+
+
+//java
+@PostMapping("/update")
+public String updateCake(@ModelAttribute Cake cake,
+                         @RequestParam("image") MultipartFile image,
+                         Model model) {
+    try {
+        String imagePath = cake.getImagePath();  // Keep old image if no new one
+
+        if (image != null && !image.isEmpty()) {
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            Path uploadPath = Paths.get(Constant.IMAGE_DIR);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String newFileName = cake.getId() + "_" + fileName;
+            Path filePath = uploadPath.resolve(newFileName);
+            Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            imagePath = "/images/" + newFileName;
+        }
+
+        cake.setImagePath(imagePath);
+        cakeService.updateCake(cake);
+        return "redirect:/cake/admin";
+
+    } catch (IOException e) {
+        model.addAttribute("error", "Error uploading image: " + e.getMessage());
+        return "update-cake";
+    }
+}
