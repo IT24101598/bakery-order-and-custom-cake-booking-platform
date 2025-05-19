@@ -1,0 +1,42 @@
+Class: User
+Package: com.example.bakery.model
+
+Attributes:
+*userId: Integer
+*username: String
+*password: String
+*email: String
+*age: Integer
+*role: String
+*gender: String
+
+Constructors:
+1.Default Constructor
+	*Initialize an empty User object with no parameters.
+
+2.Constructor with fields (excluding userId)
+	*Input: username, password, email, age, role, gender
+	*Assign each parameter to its corresponding attribute.
+
+3.Constructor with all fields
+	*Input: userId, username, password, email, age, role, gender
+	*Assign each parameter to its corresponding attribute.
+
+Methods:
+ 1.Getters:
+	*getUserId() → returns userId
+	*getUsername() → returns username
+	*getPassword() → returns password
+	*getEmail() → returns email
+	*getAge() → returns age
+	*getRole() → returns role
+	*getGender() → returns gender
+
+ 2.Setters:
+	*setUserId(userId) → sets userId
+	*setUsername(username) → sets username
+	*setPassword(password) → sets password
+	*setEmail(email) → sets email
+	*setAge(age) → sets age
+	*setRole(role) → sets role
+	*setGender(gender) → sets gender
