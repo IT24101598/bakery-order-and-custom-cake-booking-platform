@@ -1,0 +1,15 @@
+#4. Show Cake List to Admin
+
+- Get list of cakes sorted by price
+- Add cake list to model
+- Display the "admin-cake" page#
+
+//Java
+@GetMapping("/admin")
+public String listCake(Model model) {
+    List<Cake> cakeList = cakeService.getSortedByPrice();
+    model.addAttribute("cake", cakeList);
+    return "admin-cake";
+}
+
+
