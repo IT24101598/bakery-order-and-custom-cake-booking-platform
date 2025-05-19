@@ -1,0 +1,13 @@
+#part6 Show Update Form
+
+- Get the cake by ID
+- Add it to the model
+- Show the "update-cake" form with current data#
+
+//java
+@GetMapping("/update/{id}")
+public String showUpdateForm(@PathVariable String id, Model model) {
+    Cake cake = cakeService.getById(id);
+    model.addAttribute("cake", cake);
+    return "update-cake";
+}
