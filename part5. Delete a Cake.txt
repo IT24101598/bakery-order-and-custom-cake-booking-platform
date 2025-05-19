@@ -1,0 +1,10 @@
+#part5. Delete a Cake
+
+- Delete cake by ID using CakeService
+- Redirect to /cake/admin#
+
+@PostMapping("/delete/{id}")
+public String deleteCake(@PathVariable String id) {
+    cakeService.deleteById(id);
+    return "redirect:/cake/admin";
+}
