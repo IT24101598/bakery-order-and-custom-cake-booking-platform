@@ -1,0 +1,93 @@
+ # 2. Add New Cake with Image
+  //admin can add cakes and their details to page
+
+      @ Receive Cake Form Data
+
+        Receive Cake object (with name, price, quantity, etc.)
+        Receive uploaded image file from form (MultipartFile image)
+ 
+      @ Check if Image Is Uploaded
+
+         If the image is NOT empty:
+          - Continue to upload image
+         Else:
+          - Skip image upload
+   
+      @ Clean and Prepare the Image Filename(AI support)
+
+         originalFileName = image.getOriginalFilename()
+         cleanFileName = removePathAndSpecialChars(originalFileName)
+        
+          public class Constant {
+    
+          public static final String IMAGE_DIR = "src/main/resources/static/images/";
+
+          }
+      
+      @ Ensure images
+
+         uploadPath = Path to IMAGE_DIR (e.g., /uploads/images)
+         the upload folder doesn't exist:
+
+          - Create the directory
+
+             // ensures that your server has a folder ready to store uploaded image(Ai-supported)
+              Path uploadPath = Paths.get(IMAGE_DIR);
+
+              if (!Files.exists(uploadPath)) {
+               Files.createDirectories(uploadPath);
+               }
+     @  Rename Image with Cake ID Prefix
+
+       newFileName = cake.id + "_" + cleanFileName
+       filePath = uploadPath + newFileName
+       Purpose: Ensure filename is unique and traceable to the cake.
+
+    @  Copy the Uploaded File to the Upload Folder
+
+    Files.copy(image.getInputStream(), filePath, REPLACE_IF_EXISTS)
+     Purpose: Save the uploaded image physically on the server.
+
+    @ Set Image Path to the Cake Object
+
+    cake.setImagePath("/images/" + newFileName)
+
+    @ Save Cake to Database via CakeService
+
+    cakeService.addCake(cake) #
+
+
+
+//java 
+
+
+@PostMapping("/add")
+public String addCake(@ModelAttribute Cake cake,
+                      @RequestParam("image") MultipartFile image,
+                      Model model) {
+    try {
+        if (!image.isEmpty()) {
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            Path uploadPath = Paths.get(Constant.IMAGE_DIR);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);  // Create folder if missing
+            }
+
+            String newFileName = cake.getId() + "_" + fileName;
+            Path filePath = uploadPath.resolve(newFileName);
+            Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            cake.setImagePath("/images/" + newFileName);  // Set image path
+        }
+
+        cakeService.addCake(cake);  // Save to DB
+        return "redirect:/cake/admin";
+    } catch (IOException e) {
+        model.addAttribute("error", "Error uploading image");
+        return "add-cake";
+    }
+}
+
+
+
