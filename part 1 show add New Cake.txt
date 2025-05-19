@@ -1,0 +1,20 @@
+ # show "add New Cake "   
+// admin can add cake
+
+- Create a new Cake object
+- Generate the next cake ID
+- Pass the Cake object to the add form
+- Display the "add-cake" page#
+
+
+
+//add new cake
+@GetMapping("/add")
+public String showAddForm(Model model) {
+    Cake cake = new Cake();
+    cake.setId(cakeService.getNextId());  // Generate new ID
+    model.addAttribute("cake", cake);
+    return "add-cake";  // Show form page
+}
+
+
