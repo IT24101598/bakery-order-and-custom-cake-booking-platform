@@ -1,0 +1,112 @@
+Class UserService
+    Constant FILE_PATH = "data/users.txt"
+
+    Method addUser(user)
+        If email is already in use (check using isEmailDuplicate)
+            Throw error "Email already exists"
+        End If
+
+        Get next user ID (using getNextUserId)
+
+        Open FILE_PATH in append mode
+        Write user details in CSV format
+        Close file
+    End Method
+
+    Method isEmailDuplicate(email)
+        Open FILE_PATH for reading
+        For each line in the file
+            Split line into userFields
+            If email at index 3 matches given email
+                Close file
+                Return true
+            End If
+        End For
+        Close file
+        Return false
+    End Method
+
+    Method getAllUsers()
+        Create empty list 'users'
+        Open FILE_PATH for reading
+        For each line in the file
+            Split line into parts
+            If line has exactly 7 parts
+                Parse user fields
+                Create User object and add to users list
+            Else
+                Print "Skipping invalid user line"
+            End If
+        End For
+        Close file
+        Return users list
+    End Method
+
+    Method updateUser(userId, updatedUser)
+        Read all users into list
+        Open FILE_PATH for writing (overwrite)
+
+        For each user in the list
+            If user ID matches the one to update
+                Replace user data with updatedUser data
+            End If
+            Write user data to file
+        End For
+        Close file
+    End Method
+
+    Method deleteUser(userId)
+        Read all users into list
+        Open FILE_PATH for writing (overwrite)
+
+        For each user in the list
+            If user ID does NOT match the one to delete
+                Write user data to file
+            End If
+        End For
+        Close file
+    End Method
+
+    Method getNextUserId()
+        Set maxId = 0
+        Open FILE_PATH for reading
+        For each line in the file
+            Split line and extract ID
+            If ID is valid number and greater than maxId
+                Set maxId = ID
+            End If
+        End For
+        Close file
+        Return maxId + 1
+    End Method
+
+    Method validateLogin(email, password)
+        Read all users
+        For each user
+            If email and password match
+                Return user
+            End If
+        End For
+        Return null
+    End Method
+
+    Method isUsernameTaken(username)
+        Read all users
+        For each user
+            If username matches (case-insensitive)
+                Return true
+            End If
+        End For
+        Return false
+    End Method
+
+    Method isEmailTaken(email)
+        Read all users
+        For each user
+            If email matches (case-insensitive)
+                Return true
+            End If
+        End For
+        Return false
+    End Method
+End Class
