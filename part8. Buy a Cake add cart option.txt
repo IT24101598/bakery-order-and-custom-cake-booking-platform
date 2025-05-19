@@ -1,0 +1,49 @@
+#part8. Buy a Cake add cart option
+
+java script object notation - json
+
+- Receive JSON with cake ID and quantity
+- Fetch cake by ID
+- If quantity is enough:
+    - Subtract bought quantity
+    - Update cake in the system
+    - Return "OK"
+- Else:
+    - Return "ERROR"
+
+//{
+  "id": "CK101",
+  "quantity": 2
+}
+This JSON contains:
+
+id - the cake ID (a string)
+
+quantity -how many pieces to buy (a number)#
+
+
+//java
+@PostMapping("/buy")
+@ResponseBody
+public String buyCake(@RequestBody PurchaseRequest purchase) {
+    Cake cake = cakeService.getById(purchase.getId());
+
+    if (cake != null && cake.getQuantity() >= purchase.getQuantity()) {
+        cake.setQuantity(cake.getQuantity() - purchase.getQuantity());
+        cakeService.updateCake(cake);
+        return "OK";
+    }
+    return "ERROR";
+}
+
+// Inner class for receiving JSON
+public static class PurchaseRequest {
+    private String id;
+    private int quantity;
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+}
